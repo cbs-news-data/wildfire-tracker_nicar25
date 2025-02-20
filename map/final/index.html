@@ -1,1 +1,97 @@
-<!-- Maplibre final  -->
+<!-- USEFUL LINKS
+MAPLIBRE TEMPLATE: https://maplibre.org/maplibre-gl-js/docs/examples/simple-map/
+FREE BASEMAP TILES: https://medium.com/@go2garret/free-basemap-tiles-for-maplibre-18374fab60cb
+POPUPS: https://maplibre.org/maplibre-gl-js/docs/examples/popup-on-click/
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Wildfires</title>
+    <meta property="og:description" content="Initialize a map in an HTML element with MapLibre GL JS." />
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.css' />
+    <script src='https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.js'></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        const map = new maplibregl.Map({
+            container: 'map', // container id
+            style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json', // style URL
+            center: [-99.76, 36.97], // starting position [lng, lat]
+            zoom: 4, // starting zoom
+        });
+
+        map.addControl(new maplibregl.NavigationControl()); // zoom controls
+        map.scrollZoom.disable(); // disable scroll
+
+
+        // 1. ADD DATA
+        map.on('load', function () {
+            map.addSource('wildfires', {
+                type: 'geojson',
+                data: '/scripts/final/output/active_incidents_wildfires.geojson' // path to geojson file from R code
+            });
+
+
+            // 2. ADD LAYER
+            map.addLayer({
+                'id': 'wildfires-points',
+                'type': 'circle',
+                'source': 'wildfires',
+                // STYLING THE CIRCLES
+                'paint': {
+                    'circle-radius': 5,
+                    'circle-color': 'rgba(130, 4, 21, 0.2)', // dark red with 20% opacity
+                    'circle-stroke-color': '#820415', // red stroke
+                    'circle-stroke-width': 2, // stroke width
+                }
+            });
+
+            // 3. ADD POPUP
+            map.on('click', 'wildfires-points', (e) => {
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const fire_name = e.features[0].properties.IncidentName; // get name of fire
+                const fire_size = e.features[0].properties.IncidentSize; // get size of fire
+                const fire_date = e.features[0].properties.ModifiedOnDateTime_dt_pretty; // get date and time of fire
+
+                // create popup with fire details
+                new maplibregl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(`<strong>${fire_name} Fire</strong><br>${fire_size} acres burned<br>
+                Last updated: ${fire_date}`)
+                    .addTo(map);
+            });
+
+            // change the cursor to a pointer when the mouse is over the places layer
+            map.on('mouseenter', 'wildfires-points', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            // change it back to a pointer when it leaves
+            map.on('mouseleave', 'wildfires-points', () => {
+                map.getCanvas().style.cursor = '';
+            });
+        });
+
+    </script>
+</body>
+
+</html>
