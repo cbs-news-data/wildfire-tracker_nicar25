@@ -81,16 +81,36 @@
             // Update the path to the correct location of your GeoJSON file
 
 
+
+
+            
             // |||||||||||| STEP 2: ADD POINTS LAYER |||||||||||| //
             // Add a layer to display the wildfire points as circles
-            
+
+
+
+
 
 
             // |||||||||||| STEP 3: ADD POPUP INTERACTIVITY |||||||||||| //
             // Show a popup when clicking on a wildfire point
-            
 
+
+
+
+
+
+            // Change the cursor when hovering over wildfire points
+            map.on("mouseenter", "wildfires-points", () => {
+                map.getCanvas().style.cursor = "pointer"; // Change cursor to a pointer on hover
+            });
+
+            // Reset cursor when mouse leaves the point
+            map.on("mouseleave", "wildfires-points", () => {
+                map.getCanvas().style.cursor = ""; // Reset cursor
+            });
         })
+
     </script>
 </body>
 

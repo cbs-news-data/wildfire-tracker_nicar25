@@ -82,7 +82,7 @@
             // Update the path to the correct location of your GeoJSON file
             map.addSource("wildfires", {
                 type: "geojson",
-                data: "https://raw.githubusercontent.com/cbs-news-data/wildfire-tracker_nicar25/refs/heads/main/scripts/follow-along/data/active_incidents.geojson", // Path to GeoJSON file
+                data: "https://raw.githubusercontent.com/cbs-news-data/wildfire-tracker_nicar25/refs/heads/main/scripts/final/output/active_incidents_wildfires.geojson", // Path to GeoJSON file
             });
 
             // |||||||||||| STEP 2: ADD POINTS LAYER |||||||||||| //
@@ -104,16 +104,16 @@
             map.on("click", "wildfires-points", (e) => {
                 console.log(e.features) // Logs the entire array of features at the clicked location
                 const coordinates = e.features[0].geometry.coordinates.slice(); // Get coordinates
-                const fire_name = e.features[0].properties.IncidentName; // Get name of the fire
-                const fire_size = e.features[0].properties.IncidentSize; // Get size of the fire
-                const fire_date = e.features[0].properties.ModifiedOnDateTime_dt_pretty; // Get the last update date
+                const name = e.features[0].properties.IncidentName; // Get name of the fire
+                const size = e.features[0].properties.IncidentSize; // Get size of the fire
+                const date = e.features[0].properties.ModifiedOnDateTime_dt_pretty; // Get the last update date
 
                 // Create and display a popup with fire details
                 new maplibregl.Popup()
                     .setLngLat(coordinates) // Set the location of the popup
                     .setHTML(
-                        `<strong>${fire_name} Fire</strong><br>${fire_size} acres burned<br>
-                         Last updated: ${fire_date}`
+                        `<strong>${name} Fire</strong><br>${size} acres burned<br>
+                         Last updated: ${date}`
                     )
                     .addTo(map); // Add the popup to the map
             });
