@@ -1,3 +1,7 @@
+<!-- MAPLIBRE DOCS: https://maplibre.org/maplibre-gl-js/docs/examples/  -->
+<!-- FREE BASEMAPS: https://medium.com/@go2garret/free-basemap-tiles-for-maplibre-18374fab60cb-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +75,6 @@
         });
 
         map.addControl(new maplibregl.NavigationControl()); // Add zoom controls
-        map.scrollZoom.disable(); // Disable scroll zoom for better user experience
 
         map.on("load", function () {
             // |||||||||||| STEP 1: LOAD DATA |||||||||||| //
@@ -79,7 +82,7 @@
             // Update the path to the correct location of your GeoJSON file
             map.addSource("wildfires", {
                 type: "geojson",
-                data: "/scripts/final/output/active_incidents_wildfires.geojson", // Path to GeoJSON file
+                data: "https://raw.githubusercontent.com/cbs-news-data/wildfire-tracker_nicar25/refs/heads/main/scripts/follow-along/data/active_incidents.geojson", // Path to GeoJSON file
             });
 
             // |||||||||||| STEP 2: ADD POINTS LAYER |||||||||||| //
