@@ -79,27 +79,13 @@
             // |||||||||||| STEP 1: LOAD DATA |||||||||||| //
             // Add GeoJSON data source for wildfires
             // Update the path to the correct location of your GeoJSON file
-            map.addSource("wildfires", {
-                type: "geojson",
-                data: "/scripts/final/output/active_incidents_wildfires.geojson"
-            });
+
+
 
 
             
             // |||||||||||| STEP 2: ADD POINTS LAYER |||||||||||| //
             // Add a layer to display the wildfire points as circles
-            map.addLayer({
-    id: "wildfires-points", // Adds a unique identifier for the layer
-    type: "circle", // Specifies the data will be displayed as circles
-    source: "wildfires", // This links the source to the points we just added in the previous step
-    paint: {
-        "circle-radius": 5, // Size of the circle
-        "circle-color": "rgba(130, 4, 21, 0.2)", // Dark red with 20% opacity
-        "circle-stroke-color": "#820415", // Red stroke
-        "circle-stroke-width": 2, // Stroke width
-    },
-});
-
 
 
 
